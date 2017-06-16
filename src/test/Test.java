@@ -31,7 +31,7 @@ public class Test {
 			switch(keyIn.nextInt()) {
 				case 1:
 					keyIn = new Scanner(System.in);
-					System.out.println("The format of account and password must include digital and letter,\nand the number of account and password must be from 6 to 20 in length\nPlease enter account: ");
+					System.out.println("The format of account and password must only include digital or letter,\nand the number of account and password must be from 6 to 20 in length\nPlease enter account: ");
 					account = keyIn.nextLine();
 					System.out.println("Please enter password: ");
 					password = keyIn.nextLine();
@@ -44,7 +44,7 @@ public class Test {
 							System.exit(0);
 						}
 						
-						if(!account.matches("[a-zA-Z0-9|\\.]*")) {
+						if(!account.matches("[a-zA-Z0-9|\\.]+")) {
 							System.out.println("Format of account is incorrect!");
 							System.exit(0);
 						}
