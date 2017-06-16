@@ -13,6 +13,7 @@ public class Test {
 		Scanner keyIn;
 		String temp, account, password, hint;
 		
+		//將存在檔案的會員資料匯入程式
 		try {
 			FileReader fr = new FileReader("User.txt");
 			BufferedReader br = new BufferedReader(fr);
@@ -25,27 +26,34 @@ public class Test {
 			e.printStackTrace();
 		}
 		
+		//顯示功能選項，並讓使用者選取
 		System.out.print("1.Register\n2.Login\n3.Forget Password\nChoose: ");
 		try{
 			keyIn = new Scanner(System.in);
 			switch(keyIn.nextInt()) {
 				case 1:
+					//要求使用者輸入帳號、密碼跟密碼提示
+					//帳號與密碼必須只包含英文或數字並且長度在6到20個字元之間
 					keyIn = new Scanner(System.in);
-					System.out.println("The format of account and password must only include digital or letter,\nand the number of account and password must be from 6 to 20 in length\nPlease enter account: ");
+					System.out.println("The format of account and password must only include digital or letter,"
+							+ "\nand the number of account and password must be from 6 to 20 in length\nPlease enter account: ");
 					account = keyIn.nextLine();
 					System.out.println("Please enter password: ");
 					password = keyIn.nextLine();
 					System.out.println("The format of hint is unlimited\nPlease enter password hint: ");
 					hint = keyIn.nextLine();
 					
+					//先判斷帳號長度是否在6到20個字元之間
+					//再判斷帳號是否只含英文或數字
+					//最後判斷帳號是否重複
 					if(lengthCheck(account)) {
-						if(repeatCheck(account)) {
-							System.out.println("Account is repeated!");
+						if(!account.matches("[a-zA-Z0-9|\\.]+")) {
+							System.out.println("Format of account is incorrect!");
 							System.exit(0);
 						}
 						
-						if(!account.matches("[a-zA-Z0-9|\\.]+")) {
-							System.out.println("Format of account is incorrect!");
+						if(repeatCheck(account)) {
+							System.out.println("Account is repeated!");
 							System.exit(0);
 						}
 					} else {
@@ -53,8 +61,10 @@ public class Test {
 						System.exit(0);
 					}
 					
+					//先判斷密碼長度是否在6到20個字元之間
+					//再判斷密碼是否只含英文或數字
 					if(lengthCheck(password)) {
-						if(!password.matches("[a-zA-Z0-9|\\.]*")) {
+						if(!password.matches("[a-zA-Z0-9|\\.]+")) {
 							System.out.println("Format of password is incorrect!");
 							System.exit(0);
 						}
@@ -63,6 +73,7 @@ public class Test {
 						System.exit(0);
 					}
 					
+					//將符合規則的使用者帳戶加到ArrayList與檔案
 					String[] temp2 = {account, password, hint};
 					userList.add(temp2);
 					
@@ -73,12 +84,15 @@ public class Test {
 	                System.out.println("Register successfully!");
 					break;
 				case 2:
+					//要求使用者輸入帳號與密碼
 					keyIn = new Scanner(System.in);
 					System.out.println("Please enter account: ");
 					account = keyIn.nextLine();
 					System.out.println("Please enter password: ");
 					password = keyIn.nextLine();
 					
+					//判斷使用者輸入的帳號與密碼是否正確
+					//正確就顯示登入成功，反之就顯示登入失敗
 					if(loginCheck(account, password)) {
 						System.out.println("Login successfully!");
 					} else {
@@ -86,12 +100,15 @@ public class Test {
 					}
 					break;
 				case 3:
+					//要求使用者輸入帳號與密碼提示
 					keyIn = new Scanner(System.in);
 					System.out.println("Please enter account: ");
 					account = keyIn.nextLine();
 					System.out.println("Please enter password hint: ");
 					hint = keyIn.nextLine();
 					
+					//判斷使用者輸入的帳號與密碼提示是否正確
+					//正確就顯示密碼，反之顯示帳號或密碼提示輸入錯誤
 					String string = hintCheck(account, hint);
 					if(string.compareTo("not found") == 0) {
 						System.out.println("Account or hint is incorrect!");
@@ -100,13 +117,16 @@ public class Test {
 					}
 					break;
 				default:
+					//輸入功能以外的選項顯示輸入錯誤
 					System.out.println("Input error!!!");
 			}
 		}catch(Exception e) {
+			//輸入非數字的字元顯示輸入錯誤
 			System.out.println("Input error!!!");
 		}
 	}
 	
+	//判斷帳號或密碼長度是否在6到20個字元之間
 	public static boolean lengthCheck(String string) {
 		boolean flag = false;
 		
@@ -117,6 +137,7 @@ public class Test {
 		return flag;
 	}
 	
+	//判斷帳號是否重複
 	public static boolean repeatCheck(String account) {
 		boolean flag = false;
 		
@@ -128,13 +149,7 @@ public class Test {
 		return flag;
 	}
 	
-	public static boolean formatCheck(String string) {
-		boolean flag = false;
-		
-		
-		return flag;
-	}
-	
+	//判斷是否登入成功
 	public static boolean loginCheck(String account, String password) {
 		boolean flag = false;
 		
@@ -147,6 +162,7 @@ public class Test {
 		return flag;
 	}
 	
+	//判斷帳號與密碼提示是否輸入正確，並查詢密碼
 	public static String hintCheck(String account, String hint) {
 		String returnString = "not found";
 		
